@@ -14,8 +14,9 @@ class RingBuffer:
         if self.storage.length < self.capacity:
             self.storage.add_to_tail(item)
             self.current = self.storage.head
-        # if storage is full, remove the head=>old, to free up space and add new item to tail => newest
-        elif self.storage.length >= self.capacity:
+        # if storage is full, remove the head=>old, to free up space
+        # and add new item to tail => newest
+        elif self.storage.length == self.capacity:
             remove_head = self.storage.head
             self.storage.remove_from_head()
             self.storage.add_to_tail(item)
@@ -32,19 +33,19 @@ class RingBuffer:
         start = self.current
         list_buffer_contents.append(start.value)
         # loop through the nodes and append values
-        # if start.next, set next_value to start next, else set next_value to storage head
+        # if start.next, set current_node to start next, else set current_node to storage head
         if start.next:
-            next_value = start.next
+            current_node = start.next
         else:
-            next_value = self.storage.head
-        # while next_value does not equal start, append next_value value to contents
-        while next_value != start:
-            list_buffer_contents.append(next_value.value)
-            # if next_value then set next_value to next_value next, else next_value to storage head
-            if next_value.next:
-                next_value = next_value.next
+            current_node = self.storage.head
+        # while current_node does not equal start, append current_node value to contents
+        while current_node != start:
+            list_buffer_contents.append(current_node.value)
+            # if current_node then set current_node to current_node next, else current_node to storage head
+            if current_node.next:
+                current_node = current_node.next
             else:
-                next_value = self.storage.head
+                current_node = self.storage.head
         # return contents
         return list_buffer_contents
 
